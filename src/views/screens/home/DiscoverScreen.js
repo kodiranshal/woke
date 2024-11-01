@@ -7,7 +7,7 @@ import {
   Image,
   Animated,
 } from "react-native";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import MapView, { Marker } from "react-native-maps";
 import Carousel from "react-native-reanimated-carousel";
 import { Card, IconButton, Text } from "react-native-paper";
@@ -23,6 +23,7 @@ export default function DiscoverScreen() {
   const mapAnimation = new Animated.Value(0);
   const carouselAnimation = new Animated.Value(0);
   const carouselAnimationRef = useRef(carouselAnimation);
+  const [isShowCarousel, setIsShowCarousel] = useState(true);
 
   const region = {
     latitude: 37.78825,
@@ -87,9 +88,10 @@ export default function DiscoverScreen() {
     extrapolate: "clamp",
   });
   const onHideCarousel = () => {
+    setIsShowCarousel((prev) => !prev);
     Animated.timing(carouselAnimationRef.current, {
-      toValue: 1,
-      duration: 3000,
+      toValue: isShowCarousel ? 1 : 0,
+      duration: 500,
       useNativeDriver: true,
     }).start();
   };
@@ -117,14 +119,27 @@ export default function DiscoverScreen() {
         ))}
       </MapView>
 
-      <IconButton icon={"menu"} mode="contained" onPress={onHideCarousel} />
+      <View
+        style={{
+          alignItems: "flex-end",
+        }}
+      >
+        <IconButton
+          style={{
+            backgroundColor: "#fff",
+          }}
+          icon={isShowCarousel ? "close" : "menu"}
+          mode="contained"
+          onPress={onHideCarousel}
+        />
+      </View>
 
       <Animated.View
         style={{
           alignItems: "center",
           transform: [
             {
-              translateX: carouselInterpolate,
+              translateY: carouselInterpolate,
             },
           ],
         }}
