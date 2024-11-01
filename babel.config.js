@@ -11,7 +11,7 @@ module.exports = function (api) {
       [
         "module-resolver",
         {
-          extensions: [".js", ".jsx", ".ts", ".tsx", ".json"],
+          extensions: [".js", ".jsx", ".ts", ".tsx", ".json", "android.js"],
         },
       ],
       "react-native-paper/babel",
